@@ -1,0 +1,87 @@
+📦 root/
+│
+├── app.js                         # Express app setup
+├── server.js                      # HTTP + WebSocket + DB connect
+├── package.json
+├── .env                           # Env variables
+│
+├── config/
+│   ├── db.js                      # Mongoose connection
+│   └── session.js                # Session store (optional)
+│
+├── constants/
+│   └── index.js                   # App-wide constants (roles, status, socket events)
+│
+├── middleware/
+│   ├── auth.middleware.js         # JWT/Session auth check
+│   ├── error.middleware.js        # Error formatter
+│   └── validate.middleware.js     # Zod/Yup validation handler
+│
+├── modules/
+│   ├── auth/
+│   │   ├── auth.controller.js
+│   │   ├── auth.routes.js
+│   │   ├── auth.service.js
+│   │   ├── auth.dto.js
+│   │   └── auth.constants.js
+│   │
+│   ├── user/
+│   │   ├── user.controller.js
+│   │   ├── user.routes.js
+│   │   ├── user.service.js
+│   │   ├── user.model.js
+│   │   └── user.dto.js
+│   │
+│   ├── chat/
+│   │   ├── chat.controller.js
+│   │   ├── chat.routes.js
+│   │   ├── chat.service.js
+│   │   ├── chat.model.js
+│   │   └── chat.dto.js
+│   │
+│   ├── message/
+│   │   ├── message.controller.js
+│   │   ├── message.routes.js
+│   │   ├── message.service.js
+│   │   ├── message.model.js
+│   │   └── message.dto.js
+│   │
+│   ├── call/
+│   │   ├── call.controller.js     # Call logs, statuses
+│   │   ├── call.routes.js         # Optional REST endpoints
+│   │   ├── call.service.js
+│   │   ├── call.model.js
+│   │   └── call.dto.js
+│
+├── sockets/
+│   ├── index.js                   # Registers all socket handlers
+│   ├── chat.socket.js             # Messaging logic
+│   └── call.socket.js             # WebRTC signaling (offer, answer, ICE, end)
+│
+├── shared/
+│   ├── utils/
+│   │   ├── hash.util.js           # Bcrypt hashing
+│   │   ├── jwt.util.js            # Sign/verify tokens
+│   │   └── logger.js              # Custom logger
+│   └── dto/
+│       └── base.dto.js            # Common DTO schema helpers
+
+
+| Phase                          | Feature Block                                                                                                                                              | Why / Outcome                              |
+| ------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------ |
+| **0 — Foundation**             | • Project scaffolding (folders, ESLint/Prettier)<br>• `.env` + `dotenv` + `.gitignore`<br>• GitHub repo & CI lint check                                    | Clean codebase & automated checks          |
+| **1 — Core Auth (done)**       | ✔ Signup + Login (validation)<br>✔ Session store (or JWT)<br>✔ Logout                                                                                      | Users can create accounts & stay logged in |
+| **2 — Security Hardening**     | • **Password hashing** (`bcrypt`)<br>• Rate‑limit login (`express‑rate-limit`)<br>• Helmet & CORS config<br>• Central error middleware + custom `AppError` | Prevent obvious attacks / leaks            |
+| **3 — User Module**            | • Profile retrieval & update (name, status, avatar)<br>• Avatar upload (Multer + Cloudinary/S3)<br>• Contact search / add / block                          | Users can manage their identity            |
+| **4 — Real‑Time Chat MVP**     | • Socket.IO setup<br>• 1‑to‑1 message send / receive<br>• Persist messages in MongoDB<br>• Basic “delivered” status                                        | Messaging works in real‑time               |
+| **5 — UI MVP (Flutter)**       | • Auth screens<br>• Chat list + chat screen<br>• Socket connection handling                                                                                | Mobile app can actually send/receive       |
+| **6 — Group Chat**             | • Group schema & admin roles<br>• Add / remove members<br>• Group events in Socket.IO                                                                      | Conversations beyond 1‑to‑1                |
+| **7 — Media Messages**         | • Image/audio/video upload<br>• Message type support in DB<br>• Show thumbnails / download                                                                 | Rich messaging parity with WhatsApp        |
+| **8 — Message States**         | • “Sent / Delivered / Seen” tracking<br>• Typing indicators                                                                                                | Polished UX                                |
+| **9 — Voice & Video Calls**    | • WebRTC signalling via `call.socket.js`<br>• TURN/STUN config<br>• Flutter side via `flutter_webrtc`                                                      | Real‑time P2P calls                        |
+| **10 — Presence & Push**       | • Online/offline with heartbeats<br>• FCM / APNs push notifications                                                                                        | Users know who’s online & get notified     |
+| **11 — End‑to‑End Encryption** | • Diffie‑Hellman key exchange<br>• Double‑Ratchet (libsodium / Signal‑protocol.js)<br>• Encrypt blobs before save                                          | Privacy & marketing edge                   |
+| **12 — Admin / Moderation**    | • Role‑based auth (admin)<br>• Ban accounts / delete chats<br>• Basic analytics dashboard                                                                  | Ops & compliance                           |
+| **13 — Scalability Prep**      | • Dockerfile + docker‑compose<br>• Add Redis + socket.io‑adapter<br>• Horizontal Mongo replica‑set                                                         | Ready for thousands of users               |
+| **14 — Monitoring & DevOps**   | • Winston + Morgan logging<br>• Prometheus / Grafana metrics<br>• CI pipeline: tests + Docker build                                                        | Stable production operations               |
+| **15 — Nice‑to‑Haves**         | • Story / Status feature<br>• Message reactions & stickers<br>• Themes / dark‑mode toggle                                                                  | Competitive polish                         |
