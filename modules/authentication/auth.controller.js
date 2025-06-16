@@ -9,6 +9,7 @@ class AuthController {
       async usersignup(req,res,next){
       const error= validationResult(req)
       const UserData = matchedData(req)
+        const{username , password, email} = UserData
 
       const alreadyexists= await User.findOne({email:UserData.gmail})
 
@@ -16,7 +17,7 @@ class AuthController {
 
       if(!error.isEmpty()) return res.status(404).json(error.array().map((er=>er.msg)))
 try{
-      const  user = await authservices.usersignup(UserData)
+      const  user = await authservices.usersignup(username , password,email, req.headers["user-agent"])
          console.log(user)
         console.log("congratulations u are now logged in ")
         res.status(200).json(user)
