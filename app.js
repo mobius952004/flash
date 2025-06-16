@@ -8,6 +8,8 @@ import authRoutes from "./modules/authentication/auth.routes.js"
 // import userRoutes from "./modules/user/user.routes.js";
 // import chatRoutes from "./modules/chat/chat.routes.js";
 // import messageRoutes from "./modules/message/message.routes.js";
+import passport from "./config/passport.js";
+import { sessionMiddleware } from "./config/session.js";
 
 
 dotenv.config();
@@ -27,24 +29,7 @@ connectDB()
 // JSON parsing
 app.use(express.json());
 
-// Sessions
-// app.use(
-//   session({
-//     name: "sid",
-//     secret: process.env.SESSION_SECRET || "supersecret",
-//     resave: false,
-//     saveUninitialized: false,
-//     store: MongoStore.create({
-//       mongoUrl: process.env.MONGO_URI,
-//     }),
-//     cookie: {
-//       httpOnly: true,
-//       maxAge: 1000 * 60 * 60 * 24, // 1 day
-//       sameSite: "lax",
-//       secure: false, // Set to true if using HTTPS
-//     },
-//   })
-// );
+
 
 // Routes
 app.use("/api/auth/", authRoutes);
