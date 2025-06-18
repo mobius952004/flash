@@ -10,9 +10,10 @@ router.post("/user/signup",checkSchema(uservalidation),authcontroller.usersignup
 
 router.post("/user/login",checkSchema(uservalidation),authcontroller.userlogin)
 
-router.post("/api/user/Log-out",(req,res)=>{
-    
-})
+router.post("/user/Log-out",authcontroller.logout)
+
+router.post("/user/refresh",authcontroller.refresh)
+
 
 
 export default router

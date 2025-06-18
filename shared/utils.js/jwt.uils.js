@@ -11,7 +11,9 @@ const {
   REFRESH_EXPIRES_IN = "30d",
 } = process.env;
 
-class jwtservices{
+
+console.log("[UTIL] ACCESS =", JWT_ACCESS_SECRET); 
+class jwtServices{
 
   signAccessToken(user) {
   // sub (subject) → official JWT field: user ID.
@@ -41,4 +43,4 @@ class jwtservices{
 
 }
 
-export default jwtservices()
+export default new jwtServices()
