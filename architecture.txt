@@ -85,3 +85,34 @@
 | **13 — Scalability Prep**      | • Dockerfile + docker‑compose<br>• Add Redis + socket.io‑adapter<br>• Horizontal Mongo replica‑set                                                         | Ready for thousands of users               |
 | **14 — Monitoring & DevOps**   | • Winston + Morgan logging<br>• Prometheus / Grafana metrics<br>• CI pipeline: tests + Docker build                                                        | Stable production operations               |
 | **15 — Nice‑to‑Haves**         | • Story / Status feature<br>• Message reactions & stickers<br>• Themes / dark‑mode toggle                                                                  | Competitive polish                         |
+
+
+flutter client tips for jwt tokens
+// 1) Store tokens securely
+final storage = const FlutterSecureStorage();
+await storage.write(key: 'access',  value: accessToken);
+await storage.write(key: 'refresh', value: refreshToken);
+
+// 2) Dio interceptor auto‑attaches the access token
+dio.interceptors.add(
+  InterceptorsWrapper(
+    onRequest: (options, handler) async {
+      options.headers['Authorization'] =
+          'Bearer ${await storage.read(key: 'access')}';
+      handler.next(options);
+    },
+    onError: (e, handler) async {
+      if (e.response?.statusCode == 401) {
+        final ok = await refreshTokens();   // call /auth/refresh
+        if (ok) {
+          // retry original request
+          options.headers['Authorization'] =
+              'Bearer ${await storage.read(key: 'access')}';
+          final clone = await dio.fetch(options);
+          return handler.resolve(clone);
+        }
+      }
+      handler.next(e);
+    },
+  ),
+);

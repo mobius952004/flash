@@ -19,11 +19,11 @@ async userlogin(username,password,email,agent="unknown"){
 
 
 
-     const user = await User.findOne({ username,email });
+     const user = await User.findOne({email });
      if (!user) throw new Error("User not found");
     const ok = await bcrypt.compare(password, user.password);
   if (!ok) throw new Error("Wrong password");
-  return this.issueTokens(newuser, agent);//issuing token after conferming the user existance
+  return this.issueTokens(user, agent);//issuing token after conferming the user existance
 
     } 
 
@@ -33,7 +33,7 @@ async issueTokens(newuser, agent) {
   const refreshToken = jwtservices.signRefreshToken(newuser, deviceId);
 
   await Device.create({
-    newuserId:      newuser._id,
+    userId:      newuser._id,
     deviceId,
     refreshHash: jwtservices.sha256(refreshToken),
     expiresAt:   new Date(Date.now() + jwtservices.toMs(process.env.REFRESH_EXPIRES_IN || "30d")),
