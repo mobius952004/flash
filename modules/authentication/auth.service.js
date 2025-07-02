@@ -1,5 +1,5 @@
 import User from "../user/user.model.js"
-import jwtservices from "../../shared/utils.js/jwt.uils.js"
+import jwtservices from "../../shared/utils/jwt.utils.js"
 import { v4 as uuid } from "uuid";
 import Device from "../device/device.model.js";
 import bcrypt from "bcrypt"

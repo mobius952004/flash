@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import User from "../user/user.model.js";
 const deviceSchema = new mongoose.Schema(
   {
     userId:   { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },

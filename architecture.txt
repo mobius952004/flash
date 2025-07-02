@@ -88,12 +88,12 @@
 
 
 flutter client tips for jwt tokens
-// 1) Store tokens securely
+// 1 Store tokens securely
 final storage = const FlutterSecureStorage();
 await storage.write(key: 'access',  value: accessToken);
 await storage.write(key: 'refresh', value: refreshToken);
 
-// 2) Dio interceptor auto‑attaches the access token
+// 2 Dio interceptor auto‑attaches the access token
 dio.interceptors.add(
   InterceptorsWrapper(
     onRequest: (options, handler) async {

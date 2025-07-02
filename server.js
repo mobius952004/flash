@@ -2,6 +2,8 @@ import 'dotenv/config';
 
 import http from "http";
 import app from "./app.js";
+import {Server} from "socket.io"
+// import registerSocketHandeler from 
 
 
 const PORT = process.env.PORT || 3000;
@@ -9,19 +11,18 @@ const PORT = process.env.PORT || 3000;
 // Create server
 const server = http.createServer(app);
 
-import fs from "fs";
-console.log("[CHECK] .env exists? ",
-  fs.existsSync(".env") ? "yes" : "no",
-  "  cwd =", process.cwd());
+// import fs from "fs";
+// console.log("[CHECK] .env exists? ",
+//   fs.existsSync(".env") ? "yes" : "no",
+//   "  cwd =", process.cwd());
 
 
-// Socket.IO setup
-// const io = new SocketServer(server, {
-//   cors: {
-//     origin: process.env.CLIENT_ORIGIN || "http://localhost:3000",
-//     credentials: true,
-//   },
-// });
+const io = new Server(server,{
+ cors:{
+  origin:"*",
+  method:['GET','POST']
+ }
+})
 
 
 
