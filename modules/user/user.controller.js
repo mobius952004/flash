@@ -7,12 +7,12 @@ class user_controller{
        
         try{
            const userID=req.user.sub
-           const user= await userServices.userprogile(userID)
+           const user= await userServices.userprofile(userID)
            res.status(200).json(user)
         }catch(err){
             res.status(err.status|| 500).json({message:"un authorized"})
         }
-
+        
     }
 
     async change_status(req,res){
@@ -33,7 +33,7 @@ class user_controller{
 
  const {sub,profilePic}=req.user
  try{
-    const user=await userServices.change_profilepicture({sub,profilePic})
+    const user=await userServices.change_profilepicture({userid:sub,profilePic})
     res.json({message:"Profile Picture Updated",user})
  }catch (err){
     res.status(500).json({message:err.essage})
@@ -45,9 +45,9 @@ class user_controller{
  async change_password(req,res){
    
     const {newpassword,oldpassword}=req.body
-    const {sub}=req.user
+    const userid=req.user.sub
     try{
-        const user= await userServices.change_password({userid:sub,newpassword,oldpassword})
+        const user= await userServices.change_password({userid,newpassword,oldpassword})
     res.json(user);
   } catch (err) {
     res.status(400).json({ message: err.message });
@@ -58,9 +58,9 @@ class user_controller{
   async change_username(req,res){
 
 const{newusername}=req.body
-const{sub} =req.user
+const userid =req.user.sub
 try{
-    const user = await userServices.change_username((sub,newusername))
+    const user = await userServices.change_username({userid,newusername})
     res.json({ message: "Username updated", user });
   } catch (err) {
     res.status(500).json({ message: err.message });

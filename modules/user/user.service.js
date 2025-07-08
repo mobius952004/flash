@@ -3,10 +3,10 @@ import bcrypt from "bcrypt"
 
 class user_services{
 
- async userprogile(userID){
+ async userprofile(userID){
 
    
-    const user = User.findOne(()=>userID)
+    const user = await User.findOne(userID).select("-password")
    if(!user){
     const error = new Error("user not found")
     error.status(404)
