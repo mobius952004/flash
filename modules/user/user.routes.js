@@ -13,4 +13,4 @@ router.put("/profile/picture",verifyToken,userController.update_profilepicture)
 // router.get("/profile/picture",verifyToken)
 // router.put("/profile/status",verifyToken)
 
-export default Router
+export default router
