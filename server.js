@@ -11,10 +11,6 @@ const PORT = process.env.PORT || 3000;
 // Create server
 const server = http.createServer(app);
 
-// import fs from "fs";
-// console.log("[CHECK] .env exists? ",
-//   fs.existsSync(".env") ? "yes" : "no",
-//   "  cwd =", process.cwd());
 
 
 const io = new Server(server,{

@@ -1,17 +1,20 @@
-// Protects private REST APIs. Keep it framework‑agnostic so we can
-// reuse inside Socket.IO later.
-import jwtservices from "../shared/utils.js/jwt.uils"
 
-export function verifyJWT(req, res, next) {
-  const header = req.headers.authorization || "";          // Expect "Bearer <token>"
-  const token  = header.startsWith("Bearer ") ? header.slice(7) : null;
 
-  if (!token) return res.sendStatus(401);
+import jwtServices from "../shared/utils/jwt.utils.js"; // Adjust path based on your folder
+
+export const verifyToken = (req, res, next) => {
+  const authHeader = req.headers["authorization"];
+  const token = authHeader && authHeader.split(" ")[1]; // Bearer <token>
+
+  if (!token) return res.status(401).json({ message: "Access token missing" });
 
   try {
-    req.user = jwtservices.verifyAccess(token);   // payload = { sub, username, iat, exp }
+    const payload = jwtServices.verifyAccess(token);  
+    req.user = payload;  // { sub: userId, username: "..." }
     next();
-  } catch {
-    res.sendStatus(401);
+  } catch (err) {
+    return res.status(403).json({ message: "Invalid or expired access token" });
   }
-}
+};
+
+export default verifyToken

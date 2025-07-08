@@ -2,6 +2,7 @@ import express from "express";
 
 import connectDB from "./config/db.js";
 import authRoutes from "./modules/authentication/auth.routes.js"
+import userRoutes from "./modules/user/user.routes.js"
 
 
 
@@ -29,6 +30,7 @@ app.use(express.json());
 
 // Routes
 app.use("/api/auth/", authRoutes);
+app.use("/api/user/",userRoutes)
 
 app.get("/",(req,res)=>{
     res.send({msg:"hlo"})

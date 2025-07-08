@@ -3,13 +3,13 @@ import jwtservices from "../../shared/utils/jwt.utils.js"
 import { v4 as uuid } from "uuid";
 import Device from "../device/device.model.js";
 import bcrypt from "bcrypt"
-
+import { sha256 } from "js-sha256";
 
 
 class AuthServices {
 
     async usersignup (username,password,email,agent="unknown") {
-const hashedpassword= await bcrypt.hash(password,10) // bycrypt cost/salt =10 , standart will make the hashing strong
+const hashedpassword= await bcrypt.hash(password,10) 
 const newuser=await User.create({username,password:hashedpassword,email})
 return this.issueTokens(newuser,agent)
     }
