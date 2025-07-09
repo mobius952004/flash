@@ -1,7 +1,7 @@
 
 
 
-export const uservalidation = 
+export const signinValidation = 
     {
     username: {
         isLength: {
@@ -40,4 +40,21 @@ export const uservalidation =
     }
 
 
+
     }
+
+    export const loginValidation = {
+  email: {
+    isEmail: true,
+    notEmpty: true,
+    errorMessage: "Valid email required",
+  },
+  password: {
+    notEmpty: true,
+    isLength: {
+      options: { min: 6 },
+      errorMessage: "Password must be at least 6 characters",
+    },
+  },
+};
+

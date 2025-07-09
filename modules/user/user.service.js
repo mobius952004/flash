@@ -5,8 +5,9 @@ class user_services{
 
  async userprofile(userID){
 
+    // console.log("Searching for user with ID:", userID);
    
-    const user = await User.findOne(userID).select("-password")
+    const user = await User.findById(String(userID)).select("-password")
    if(!user){
     const error = new Error("user not found")
     error.status(404)

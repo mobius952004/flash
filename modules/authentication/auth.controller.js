@@ -12,9 +12,14 @@ class AuthController {
     const { username, password, email } = UserData
     if (!error.isEmpty()) return res.status(422).json(error.array().map((er => er.msg)))
 
-    const alreadyexists = await User.findOne({ email:email })
+    const existingUsername = await User.findOne({ username });
+    if (existingUsername) {
+      return res.status(409).json("User with Username Or email Already Exists");
+    }
 
-    if (alreadyexists) return res.status(409).json("User already exists with this Email")
+    const alreadyexists = await User.findOne({ email })
+
+    if (alreadyexists) return res.status(409).json("User with Username Or email Already Exists")
 
     try {
       const user = await authservices.usersignup(username, password, email, req.headers["user-agent"])
@@ -22,8 +27,8 @@ class AuthController {
       console.log("congratulations u are now signedup ")
       res.status(200).json(user)
     } catch (err) {
-         console.error(err);
-    return res.status(500).json("Something went wrong")
+      console.error(err);
+      return res.status(500).json("Something went wrong")
     }
 
 
@@ -40,15 +45,15 @@ class AuthController {
     }
 
     const UserData = matchedData(req);
-    const { username, password, email } = UserData
+    const {  password, email } = UserData
 
     try {
 
-      const result = await authservices.userlogin(username, password, email, req.headers["user-agent"])
+      const result = await authservices.userlogin( password, email, req.headers["user-agent"])
       res.status(200).send(result)
     } catch (err) {
 
-      res.status(401).send("user not found")
+      res.status(401).json("user not found")
     }
 
   }

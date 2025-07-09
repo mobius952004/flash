@@ -5,10 +5,12 @@ class user_controller{
 
     async userprofile(req,res){
        
+      // console.log("user from JWT:", req.user);
         try{
            const userID=req.user.sub
            const user= await userServices.userprofile(userID)
            res.status(200).json(user)
+
         }catch(err){
             res.status(err.status|| 500).json({message:"un authorized"})
         }
