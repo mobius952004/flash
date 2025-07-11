@@ -59,10 +59,10 @@ class user_controller{
 
   async change_username(req,res){
 
-const{newusername}=req.body
+const{newUsername}=req.body
 const userid =req.user.sub
 try{
-    const user = await userServices.change_username({userid,newusername})
+    const user = await userServices.change_username({userid,newUsername})
     res.json({ message: "Username updated", user });
   } catch (err) {
     res.status(500).json({ message: err.message });

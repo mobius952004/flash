@@ -32,7 +32,7 @@ export async function loginUser({ email, password }) {
  const data = await res.json()
 
   if(!res.ok){
-    throw new Error(data|| "Signup Failed")
+    throw new Error(data.message|| "Signup Failed")
   }
   return data
 }
@@ -47,27 +47,31 @@ export async function fetchProfile(accessToken) {
 
    const data = await res.json()
   if(!res.ok){
-    throw new Error(data|| "Signup Failed")
+    throw new Error(data.message|| "Signup Failed")
   }
   return data
 }
 
 // ✅ Update username
 export async function updateUsername(accessToken, newUsername) {
-  const res = await fetch(`${API_BASE}/user/profile/username`, {
+  const res = await fetch(`${API_BASE}/api/user/profile/username`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${accessToken}`,
     },
-    body: JSON.stringify({ username: newUsername }),
+    body: JSON.stringify({newUsername}),
   });
-  return res.json();
+   const data = await res.json()
+  if(!res.ok){
+    throw new Error(data.message|| "user name not changed")
+  }
+  return data.user
 }
 
 // ✅ Update password
 export async function updatePassword(accessToken, currentPassword, newPassword) {
-  const res = await fetch(`${API_BASE}/user/profile/password`, {
+  const res = await fetch(`${API_BASE}/api/user/profile/password`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
@@ -80,7 +84,7 @@ export async function updatePassword(accessToken, currentPassword, newPassword) 
 
 // ✅ Update profile picture (by URL)
 export async function updateProfilePic(accessToken, profilePic) {
-  const res = await fetch(`${API_BASE}/user/profile/picture`, {
+  const res = await fetch(`${API_BASE}/api/user/profile/picture`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",

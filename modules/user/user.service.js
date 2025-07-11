@@ -7,7 +7,7 @@ class user_services{
 
     // console.log("Searching for user with ID:", userID);
    
-    const user = await User.findById(String(userID)).select("-password")
+    const user = await User.findById(String(userID))
    if(!user){
     const error = new Error("user not found")
     error.status(404)
@@ -16,13 +16,13 @@ class user_services{
    return user
 
 }
- async changestatus({userID,status}){
+ async changestatus({userID,newstatus}){
    
   const user = await User.findByIdAndUpdate(
     userID,
-    { status },
+    { status:newstatus },
     { new: true }
-  ).select("-password");
+  )
 
   return user;
 
@@ -30,7 +30,7 @@ class user_services{
 
 async change_profilepicture({userid,profilepic}){
 
-const user=await User.findByIdAndUpdate(userid,(profilepic),{new:true}).select("-password")
+const user=await User.findByIdAndUpdate(userid,{profilePic:profilepic},{new:true})
 
 return user
 }
@@ -52,11 +52,14 @@ user.password=hashed
 }
 
 
-async change_username({userid,newusername}){
+async change_username({userid,newUsername}){
 
-    const user= User.findByIdAndUpdate(userid,{username},{new:true}.select("-password"))
+    const user= await User.findByIdAndUpdate({_id:userid},{username:newUsername},{new:true}).select("-password")
+    console.log("Updating user", userid, "to", newUsername);
 
-    return userc
+  if (!user) throw new Error("User not found");
+
+    return user
 }
 
 
